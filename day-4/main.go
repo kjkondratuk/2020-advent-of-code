@@ -92,43 +92,11 @@ func NewPassportArgs(passportMap map[string]string) *PassportArgs {
 }
 
 func (p *PassportArgs) isValid() bool {
-	result := true
-	switch {
-	case p.PassportId == "":
-		log.Printf("Invalid due to passport ID - [%s]", p.PassportId)
-		result = false
-		break
-	case p.BirthYear == 0:
-		log.Printf("Invalid due to birth year - [%d]", p.BirthYear)
-		result = false
-		break
-	case p.IssueYear == 0:
-		log.Printf("Invalid due to issue year - [%d]", p.IssueYear)
-		result = false
-		break
-	case p.ExpireYear == 0:
-		log.Printf("Invalid due to expire year - [%d]", p.ExpireYear)
-		result = false
-		break
-	case p.Height == "":
-		log.Printf("Invalid due to height - [%s]", p.Height)
-		result = false
-		break
-	case p.HairColor == "":
-		log.Printf("Invalid due to hair color - [%s]", p.HairColor)
-		result = false
-		break
-	case p.EyeColor == "":
-		log.Printf("Invalid due to eye color - [%s]", p.EyeColor)
-		result = false
-		break
-	}
-	return result
-	//return p.PassportId != "" &&
-	//	p.EyeColor != "" &&
-	//	p.HairColor != "" &&
-	//	p.Height != "" &&
-	//	p.ExpireYear != 0 &&
-	//	p.IssueYear != 0 &&
-	//	p.BirthYear != 0
+	return p.PassportId != "" &&
+		p.EyeColor != "" &&
+		p.HairColor != "" &&
+		p.Height != "" &&
+		p.ExpireYear != 0 &&
+		p.IssueYear != 0 &&
+		p.BirthYear != 0
 }
