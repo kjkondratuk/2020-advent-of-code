@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	//xInc, _ := strconv.ParseInt(os.Args[0], 10, 64)
+	//yInc, _ := strconv.ParseInt(os.Args[1], 10, 64)
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		log.Println("Could not open input file!  Exiting!")
@@ -18,11 +20,27 @@ func main() {
 
 	// cartograph[y-coord][x-coord] is the format of the map
 	cartograph := plotLines(lines)
-	route := traversePath(cartograph, 3, 1)
-	overlayMapWithRoute(cartograph, route)
+	route1 := traversePath(cartograph, 1, 1)
+	route2 := traversePath(cartograph, 3, 1)
+	route3 := traversePath(cartograph, 5, 1)
+	route4 := traversePath(cartograph, 7, 1)
+	route5 := traversePath(cartograph, 1, 2)
+	//overlayMapWithRoute(cartograph, route)
 	//log.Println(route)
-	log.Printf("Path length: %d\n", len(route))
-	log.Printf("Tree count: %d", countTrees(route))
+	log.Printf("Path length: %d\n", len(route1))
+	log.Printf("Tree count: %d", countTrees(route1))
+
+	log.Printf("Path length: %d\n", len(route2))
+	log.Printf("Tree count: %d", countTrees(route2))
+
+	log.Printf("Path length: %d\n", len(route3))
+	log.Printf("Tree count: %d", countTrees(route3))
+
+	log.Printf("Path length: %d\n", len(route4))
+	log.Printf("Tree count: %d", countTrees(route4))
+
+	log.Printf("Path length: %d\n", len(route5))
+	log.Printf("Tree count: %d", countTrees(route5))
 }
 
 func plotLines(lines []string) [][]rune {
