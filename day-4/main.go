@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -92,11 +93,70 @@ func NewPassportArgs(passportMap map[string]string) *PassportArgs {
 }
 
 func (p *PassportArgs) isValid() bool {
-	return p.PassportId != "" &&
-		p.EyeColor != "" &&
-		p.HairColor != "" &&
-		p.Height != "" &&
-		p.ExpireYear != 0 &&
-		p.IssueYear != 0 &&
-		p.BirthYear != 0
+	return p.PassportId != "" && validPassportId(p.PassportId) && // 52
+		p.EyeColor != "" && validEyeColor(p.EyeColor) && // 70
+		p.HairColor != "" && validHairColor(p.HairColor) && // 75
+		p.Height != "" && validHeight(p.Height) && // 71
+		p.ExpireYear != 0 && validExpirationYear(p.ExpireYear) && // 78
+		p.IssueYear != 0 && validIssueYear(p.IssueYear) && // 62
+		p.BirthYear != 0 && validBirthYear(p.BirthYear) // 75
+}
+
+func validPassportId(id string) bool {
+	result, _ := regexp.MatchString("^[0-9]{9}$", id)
+	log.Printf("Passport: %t - %s\n", result, id)
+	return result
+}
+
+func validBirthYear(year int) bool {
+	result := year >= 1920 && year <= 2002
+	log.Printf("Birth Year: %t\n", result)
+	return result
+}
+
+func validIssueYear(year int) bool {
+	result := year >= 2010 && year <= 2020
+	log.Printf("Issue Year: %t\n", result)
+	return result
+}
+
+func validExpirationYear(year int) bool {
+	result := year >= 2020 && year <= 2030
+	log.Printf("Expiration Year: %t\n", result)
+	return result
+}
+
+func validHeight(height string) bool {
+	correctlyFormatted, _ := regexp.MatchString("^[0-9]+(cm|in)$", height)
+	if correctlyFormatted {
+		units := height[len(height)-2:]
+		heightString := height[:len(height)-2]
+		heightInt, _ := strconv.ParseInt(heightString, 10, 32)
+		if units == "cm" {
+			result := heightInt >= 150 && heightInt <= 193
+			log.Printf("Height(cm): %t\n", result)
+			return result
+		} else if units == "in" {
+			result := heightInt >= 59 && heightInt <= 76
+			log.Printf("Height(in): %t\n", result)
+			return result
+		} else {
+			panic("Invalid units for height: " + units)
+		}
+	} else {
+		log.Printf("Incorrectly formatted Height: %s", height)
+	}
+	return false
+}
+
+func validHairColor(color string) bool {
+	result, _ := regexp.MatchString("^#[0-9a-f]{6}$", color)
+	log.Printf("Hair Color: %t - %s\n", result, color)
+	return result
+}
+
+func validEyeColor(color string) bool {
+	result, _ := regexp.MatchString("^(amb|blu|brn|gry|grn|hzl|oth)$", color)
+	log.Printf("Eye Color: %t - %s\n", result, color)
+	return result
 }
