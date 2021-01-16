@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -24,6 +25,7 @@ func main() {
 	// split based on empty lines
 	lines := strings.Split(string(data), "\n")
 	max := 0
+	seats := make([]int, 0)
 	for i, seatString := range lines {
 		log.Printf("Processing line: %d", i)
 		rowPortion := seatString[:7]
@@ -37,7 +39,17 @@ func main() {
 		if seatId > max {
 			max = seatId
 		}
+		seats = append(seats, seatId)
 	}
+
+	sort.Ints(seats)
+
+	for i, seat := range seats {
+		//if i+7 != seat {
+		log.Printf("Seat: %d - %d", i+7, seat)
+		//}
+	}
+
 	log.Printf("Max seat ID: %d", max)
 }
 
